@@ -24,7 +24,7 @@ const createEditor = () => {
 	
 }
 
-const createMenu = (notepad) => {
+const createMenu = notepad => {
 	const template = [
 		{
 			label: 'File',
