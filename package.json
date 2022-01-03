@@ -16,5 +16,9 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^16.0.5"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.6",
+    "node-fetch-npm": "^2.0.4"
   }
 }
