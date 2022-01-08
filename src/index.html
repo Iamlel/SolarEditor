@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
+	<head>
+		<meta charset="UTF-8"> </meta>
+		<meta http-equiv="Content-Security-Policy" 
+		content="script-src 'self';"> </meta>
+		<title>Solar Editor</title>
 	
-    <link rel="stylesheet" href="index.css">
-	<link
-		rel="stylesheet"
-		href=""https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"">
-	
-	<script defer src="render.js"></script>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
-  </body>
+		<link rel="stylesheet" href="index.css"> </link>
+	</head>
+	<body>
+		<input
+			type="button" class="hidden" value="X" id="showmenu"
+		> </input>
+		<div id="showbar"> </div>
+	</body>
+	<main>
+		<textarea 
+		id="mainText"
+		spellcheck="false"
+		autofocus
+		> </textarea>
+	</main>
 </html>

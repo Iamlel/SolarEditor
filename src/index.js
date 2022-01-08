@@ -1,30 +1,37 @@
-const {Menu, app, BrowserWindow} = require('electron');
+const electron = require('electron');
+const { Menu, app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const fetch = require('node-fetch');
 
-async function getVersion() {
+let notepad;
+
+async function getNewVersion() {
 	const url = 'https://api.github.com/repos/Iamlel/ICE/releases/latest';
 	const response = await fetch(url);
 	const result = await response.json();
 	return ((result.tag_name == undefined) ? "<Unknown>": result.tag_name);
 }
 
+const output = () => {
+	notepad.setMenuBarVisibility(false)
+}
+
 const createNotepad = () => {
-	const notepad = new BrowserWindow({	
+	notepad = new BrowserWindow({	
 		width: 720,
 		height: 1020,
 		icon: path.join(__dirname, '../', "temporary.ico"),
+		webPreferences: {
+			preload: path.join(__dirname, "renderer.js"),
+		}
 	});
-	getVersion().then(x => { notepad.setTitle("ICE " + x); });
 	notepad.loadFile(path.join(__dirname, "index.html"));
-	createMenu(notepad);
+	createMenu();
 }
 
 const createEditor = () => {
-	
 }
 
-const createMenu = (notepad) => {
+const createMenu = () => {
 	const template = [
 		{
 			label: 'File',
@@ -53,7 +60,14 @@ const createMenu = (notepad) => {
 			{ role: 'delete' },
 			{ role: 'selectall' }
 			]
-	},
+		},
+		{
+			label: "Tools",
+			submenu: [
+			{ label: 'Console' },
+			{ label: 'Explorer' }
+			]
+		},
 		{
 			label: 'View',
 			submenu: [
@@ -67,8 +81,15 @@ const createMenu = (notepad) => {
 			},
 			{
 				type: 'checkbox',
-				cehcked: false,
+				checked: false,
 				role: 'togglefullscreen'
+			},
+			{
+				label: 'Hide Menubar',
+				click: function() {
+					notepad.setMenuBarVisibility(false);
+					notepad.webContents.send('updateMenuBar')
+				}
 			},
 			{
 				type: 'separator',
@@ -85,25 +106,36 @@ const createMenu = (notepad) => {
 		},
 		{
 			label: 'Help',
+			submenu: [
+			{
+				label: 'Open Github',
+				click: function() { electron.shell.openExternal('https://github.com/Iamlel/ICE') }
+			},
+			{
+				label: 'about',
+				click: function() { }
+				
+			},
+			]
 		},
 		{
 			label: 'Dev Tools',
-			submenu : [
+			submenu: [
+			{ label: 'Dev Tool', click: function() { notepad.webContents.openDevTools(); } },
+			{ label: 'Refresh', click: function() { notepad.reload() } },
+			{ label: 'Test', click: function() { notepad.webContents.send('test', 'test') } }
 			]
 		}
 	]
 	const menu = Menu.buildFromTemplate(template);
 	Menu.setApplicationMenu(menu);
 }
-/*
 
-
-
-*/
 app.on('ready', function() {
 	createNotepad();
 	createEditor();
 });
+
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
 		app.quit();
@@ -116,3 +148,5 @@ app.on('activate', () => {
 		createWindow();
 	}
 });
+
+ipcMain.on('updateMenuBar', () => { notepad.setMenuBarVisibility(true); })

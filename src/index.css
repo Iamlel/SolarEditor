@@ -1,0 +1,53 @@
+
+.hidden {
+  visibility: hidden;
+}
+
+#showmenu {
+	background-color: rgb(38,38,38);
+	color: rgb(203,242,240);
+	border: none;
+	border-radius: .25em;
+	padding: 0.3em 0.5em;
+	font-weight: bold;
+	cursor: pointer;
+	text-align: center;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+#showbar {
+	border: none;
+	width: 100%;
+	height: 26px;
+	background-color: rgb(25,32,61);
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+}
+
+#mainText {
+	resize: none;
+	width: 100%;
+	height: 97%;
+	background-color: transparent;
+	color: white;
+	border: none;
+	outline: none;
+	tab-size: 4;
+	font-family: "Lucida Console", "Courier New", monospace;
+}
+
+body {
+	background-color: rgb(22,22,22);
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+
+main {
+	flex: 1;
+	padding: 10px;
+}
